@@ -19,12 +19,12 @@ import integrate as integ
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--gbar', '-gb', type=float, default=0.0)
-parser.add_argument('--g', '-g' type=float, default=0.0)
+parser.add_argument('--g', '-g', type=float, default=0.0)
 parser.add_argument('--cbar', '-cb', type=float, default=0.0)
-parser.add_argument('--c', '-c' type=float, default=0.0)
-parser.add_argument('--tau', '-t' type=float, default=1.0)
-parser.add_argument('--N', '-N' type=int, default=10000)
-parser.add_argument('--seed', '-s' type=int, default=0)
+parser.add_argument('--c', '-c', type=float, default=0.0)
+parser.add_argument('--tau', '-t', type=float, default=1.0)
+parser.add_argument('--N', '-N', type=int, default=10000)
+parser.add_argument('--seed', '-s', type=int, default=0)
 
 args = vars(parser.parse_args())
 print(parser.parse_args())
