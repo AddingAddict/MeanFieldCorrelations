@@ -48,12 +48,7 @@ print("Using",device)
 net.set_seed(seed)
 
 J = net.generate_gauss_conn(gbar[0],g[0])
-print(np.mean(np.sum(J,1)))
-print(np.std(np.sum(J,1)))
-
 I = net.generate_gauss_input(cbar[0],c[0])
-print(np.mean(I))
-print(np.std(I))
 
 J = torch.from_numpy(J).to(device)
 I = torch.from_numpy(I).to(device)
@@ -83,14 +78,17 @@ r = r.cpu().numpy()
 print("Integrating network took ",time.process_time() - start," s")
 print('')
 
+hbar_mask = np.mean(h_mask,-1)
+rbar_mask = np.mean(r_mask,-1)
+
 htild_mask = h_mask - np.mean(h_mask,-1)[:,None]
 rtild_mask = r_mask - np.mean(r_mask,-1)[:,None]
 
-u = np.mean(htild_mask)
-m = np.mean(rtild_mask)
+u = np.mean(hbar_mask)
+m = np.mean(rbar_mask)
 
-Dbar = np.var(h_mask)
-Cbar = np.mean(r_mask**2)
+Dbar = np.var(hbar_mask)
+Cbar = np.mean(rbar_mask**2)
 
 def off_diag(A):
     return A[~np.eye(A.shape[0],dtype=bool)]
@@ -98,7 +96,7 @@ def off_diag(A):
 def off_diag_sum(A):
     return np.sum(A)-np.sum(np.diag(A))
 
-lags = np.arange(0,50+1,5)*tau[0]
+lags = np.arange(0,50+1,2)*tau[0]
 lag_idxs = np.round(lags / dt).astype(np.int32)
 
 Dtild_on_0 = np.zeros(len(lags))
