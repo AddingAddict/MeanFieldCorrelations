@@ -47,11 +47,11 @@ print("Using",device)
 
 net.set_seed(seed)
 
-J = net.generate_gauss_conn(gbar,g)
+J = net.generate_gauss_conn(gbar[0],g[0])
 print(np.mean(np.sum(J,1)))
 print(np.std(np.sum(J,1)))
 
-I = net.generate_gauss_input(cbar,c)
+I = net.generate_gauss_input(cbar[0],c[0])
 print(np.mean(I))
 print(np.std(I))
 
