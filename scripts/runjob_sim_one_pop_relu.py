@@ -109,7 +109,8 @@ def runjobs():
         inpath = currwd + "/sim_one_pop_relu.py"
         c1 = "{:s} -gb {:.1f} -g {:.1f} -cb {:.1f} -c {:.1f} -t {:.1f} -N {:d} -s {:d}".format(inpath,gbar,g,cbar,c,tau,N,seed)
         
-        jobname="sim_one_pop_relu"+"-s-{:d}".format(seed)
+        jobname="sim_one_pop_relu"+\
+            "_gb-{:.1f}_g-{:.1f}_cb-{:.1f}_c-{:.1f}_t-{:.1f}_N-{:d}_s-{:d}".format(gbar,g,cbar,c,tau,N,seed)
         
         if not args2.test:
             jobnameDir=os.path.join(ofilesdir, jobname)

@@ -84,6 +84,9 @@ rbar_mask = np.mean(r_mask,-1)
 htild_mask = h_mask - np.mean(h_mask,-1)[:,None]
 rtild_mask = r_mask - np.mean(r_mask,-1)[:,None]
 
+h_fluct = np.std(np.mean(h_mask,0))
+r_fluct = np.std(np.mean(r_mask,0))
+
 u = np.mean(hbar_mask)
 m = np.mean(rbar_mask)
 
@@ -123,6 +126,8 @@ for idx,lag_idx in enumerate(lag_idxs):
 
 res_dict = {}
 
+res_dict['h_fluct'] = h_fluct
+res_dict['r_fluct'] = r_fluct
 res_dict['u'] = u
 res_dict['m'] = m
 res_dict['Dbar'] = Dbar

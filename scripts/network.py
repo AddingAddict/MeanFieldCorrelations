@@ -53,14 +53,14 @@ class Network:
 
                 if np.isscalar(W):
                     this_W = W
-                elif W.shape == 1:
+                elif W.ndim == 1:
                     this_W = W[preC]
                 else:
                     this_W = W[pstC,preC]
 
                 if np.isscalar(K):
                     this_K = K*NpreC/self.NC[0]
-                elif K.shape == 1:
+                elif K.ndim == 1:
                     this_K = K[preC]
                 else:
                     this_K = K[pstC,preC]
@@ -85,14 +85,14 @@ class Network:
 
             if np.isscalar(WX):
                 this_WX = WX
-            elif WX.shape == 1:
+            elif WX.ndim == 1:
                 this_WX = WX[preC]
             else:
                 this_WX = WX[pstC,preC]
 
             if np.isscalar(KX):
                 this_KX = KX
-            elif KX.shape == 1:
+            elif KX.ndim == 1:
                 this_KX = KX[preC]
             else:
                 this_KX = KX[pstC,preC]
@@ -117,14 +117,14 @@ class Network:
 
                 if np.isscalar(gbar):
                     this_gbar = gbar
-                elif gbar.shape == 1:
+                elif gbar.ndim == 1:
                     this_gbar = gbar[preC]
                 else:
                     this_gbar = gbar[pstC,preC]
 
                 if np.isscalar(g):
                     this_g = g
-                elif g.shape == 1:
+                elif g.ndim == 1:
                     this_g = g[preC]
                 else:
                     this_g = g[pstC,preC]
@@ -145,14 +145,14 @@ class Network:
 
             if np.isscalar(cbar):
                 this_cbar = cbar
-            elif cbar.shape == 1:
+            elif cbar.ndim == 1:
                 this_cbar = cbar[preC]
             else:
                 this_cbar = cbar[pstC,preC]
 
             if np.isscalar(c):
                 this_c = c
-            elif c.shape == 1:
+            elif c.ndim == 1:
                 this_c = c[preC]
             else:
                 this_c = c[pstC,preC]
