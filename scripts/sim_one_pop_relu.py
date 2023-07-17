@@ -152,7 +152,6 @@ res_dict['Ctild_on_2'] = Ctild_on_2
 res_dict['Ctild_off_0'] = Ctild_off_0
 res_dict['Ctild_off_2'] = Ctild_off_2
 
-with open(res_dir+'seed={:d}'.format(
-        gbar[0],g[0],cbar[0],c[0],tau[0],N,seed)+'.pkl', 'wb') as handle:
+with open(res_dir+'seed={:d}'.format(seed)+'.pkl', 'wb') as handle:
     pickle.dump(res_dict,handle)
 
