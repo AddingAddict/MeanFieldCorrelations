@@ -63,7 +63,7 @@ def sim_dyn_tensor(ts,phi,T,J,I):
         return torch.tensor(meanF)
 
     # H = odeint(ode_fn,torch.zeros_like(I),ts[[0,-1]],event_fn=event_fn)
-    H = odeint(ode_fn,torch.zeros_like(I,dtype=torch.float32),ts)
+    H = odeint(ode_fn,torch.zeros_like(I,dtype=torch.float32),ts,method='rk4')
     H = torch.transpose(H,0,1)
 
     return H,phi(H),False

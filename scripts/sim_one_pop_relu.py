@@ -37,6 +37,12 @@ tau = np.array([args['tau']])
 N = args['N']
 seed = args['seed']
 
+res_dir = './../results/res_one_pop_relu_gbar={:.1f}_g={:.1f}_cbar={:.1f}_c={:.1f}_tau={:.1f}_N={:d}'.format(
+        gbar[0],g[0],cbar[0],c[0],tau[0],N)
+    
+if not os.path.exists(res_dir):
+    os.makedirs(res_dir)
+
 g2 = g**2
 c2 = c**2
 
@@ -62,8 +68,8 @@ relu = torch.nn.ReLU()
 
 Nt = 50*tau[0]
 dt = tau[0]/3
-int_ts = torch.linspace(0,12*Nt,round(12*Nt/dt)+1).to(device)
-mask_time = int_ts>(2*Nt)
+int_ts = torch.linspace(0,15*Nt,round(15*Nt/dt)+1).to(device)
+mask_time = int_ts>(5*Nt)
 int_ts_mask = int_ts[mask_time].cpu().numpy()
 
 start = time.process_time()
@@ -78,14 +84,19 @@ r = r.cpu().numpy()
 print("Integrating network took ",time.process_time() - start," s")
 print('')
 
-hbar_mask = np.mean(h_mask,-1)
-rbar_mask = np.mean(r_mask,-1)
-
-htild_mask = h_mask - np.mean(h_mask,-1)[:,None]
-rtild_mask = r_mask - np.mean(r_mask,-1)[:,None]
-
 h_fluct = np.std(np.mean(h_mask,0))
 r_fluct = np.std(np.mean(r_mask,0))
+
+h_mask = h_mask - np.mean(h_mask,0)
+h_mask = h_mask * np.sqrt(np.mean(np.var(h_mask,0))) / np.std(h_mask,0)
+r_mask = r_mask - np.mean(r_mask,0)
+r_mask = r_mask * np.sqrt(np.mean(np.var(r_mask,0))) / np.std(r_mask,0)
+h_mask = h_mask + np.mean(h[:,mask_time])
+r_mask = r_mask + np.mean(r[:,mask_time])
+hbar_mask = np.mean(h_mask,-1)
+rbar_mask = np.mean(r_mask,-1)
+htild_mask = h_mask - hbar_mask[:,None]
+rtild_mask = r_mask - rbar_mask[:,None]
 
 u = np.mean(hbar_mask)
 m = np.mean(rbar_mask)
@@ -99,7 +110,7 @@ def off_diag(A):
 def off_diag_sum(A):
     return np.sum(A)-np.sum(np.diag(A))
 
-lags = np.arange(0,50+1,2)*tau[0]
+lags = np.arange(0,50+1,1)*tau[0]
 lag_idxs = np.round(lags / dt).astype(np.int32)
 
 Dtild_on_0 = np.zeros(len(lags))
@@ -116,11 +127,11 @@ for idx,lag_idx in enumerate(lag_idxs):
     r_cov_mat = rtild_mask[:,lag_idx:]@rtild_mask[:,:len(int_ts_mask)-lag_idx].T/(len(int_ts_mask)-lag_idx)
     
     Dtild_on_0[idx] = np.mean(np.diag(h_cov_mat))
-    Dtild_on_2[idx] = np.mean(np.diag(h_cov_mat)**2)
+    Dtild_on_2[idx] = np.mean(np.diag(h_cov_mat**2))
     Dtild_off_0[idx] = np.mean(off_diag(h_cov_mat))*net.N
     Dtild_off_2[idx] = np.mean(off_diag(h_cov_mat**2))*net.N
     Ctild_on_0[idx] = np.mean(np.diag(r_cov_mat))
-    Ctild_on_2[idx] = np.mean(np.diag(r_cov_mat)**2)
+    Ctild_on_2[idx] = np.mean(np.diag(r_cov_mat**2))
     Ctild_off_0[idx] = np.mean(off_diag(r_cov_mat))*net.N
     Ctild_off_2[idx] = np.mean(off_diag(r_cov_mat**2))*net.N
 
@@ -141,7 +152,7 @@ res_dict['Ctild_on_2'] = Ctild_on_2
 res_dict['Ctild_off_0'] = Ctild_off_0
 res_dict['Ctild_off_2'] = Ctild_off_2
 
-with open('./../results/res_one_pop_relu_gbar={:.1f}_g={:.1f}_cbar={:.1f}_c={:.1f}_tau={:.1f}_N={:d}_seed={:d}'.format(
+with open(res_dir+'seed={:d}'.format(
         gbar[0],g[0],cbar[0],c[0],tau[0],N,seed)+'.pkl', 'wb') as handle:
     pickle.dump(res_dict,handle)
 
