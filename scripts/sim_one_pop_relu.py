@@ -37,7 +37,7 @@ tau = np.array([args['tau']])
 N = args['N']
 seed = args['seed']
 
-res_dir = './../results/res_one_pop_relu_gbar={:.1f}_g={:.1f}_cbar={:.1f}_c={:.1f}_tau={:.1f}_N={:d}'.format(
+res_dir = './../results/res_one_pop_relu_gbar={:.1f}_g={:.1f}_cbar={:.1f}_c={:.1f}_tau={:.1f}_N={:d}/'.format(
         gbar[0],g[0],cbar[0],c[0],tau[0],N)
     
 if not os.path.exists(res_dir):
